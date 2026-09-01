@@ -68,11 +68,12 @@
         }
 
         .cart-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 0;
-            border-bottom: 1px solid #eee;
+            display: grid;
+        grid-template-columns: minmax(0, 1fr) 120px 130px 70px;
+        gap: 20px;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #eee;
         }
 
         .product-info h3 {
@@ -127,6 +128,65 @@
             padding: 50px 20px;
             color: #7b8495;
         }
+
+        .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity-button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #d7dbe5;
+    background: white;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.quantity-button:hover {
+    background: #eef2ff;
+}
+
+.quantity-value {
+    min-width: 25px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.remove-button {
+    border: none;
+    background: transparent;
+    color: #dc2626;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.remove-button:hover {
+    text-decoration: underline;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+}
+
+.clear-button {
+    border: 1px solid #dc2626;
+    background: white;
+    color: #dc2626;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
+
+
     </style>
 </head>
 
@@ -164,6 +224,20 @@
                 <div id="cart-items">
             </div>
 
+            <div
+    id="cart-actions"
+    class="cart-actions"
+    style="display:none;"
+>
+    <button
+        class="clear-button"
+        data-testid="clear-cart"
+        onclick="clearCart()"
+    >
+        Clear Cart
+    </button>
+</div>
+
 
                 <div class="summary">
 
@@ -192,9 +266,10 @@
         </div>
 
     </main>
+
 <script>
 
-    const cart =
+    let cart =
         JSON.parse(localStorage.getItem('shopsphereCart')) || [];
 
     const cartItems =
@@ -203,54 +278,190 @@
     const cartTotal =
         document.getElementById('cart-total');
 
-    let total = 0;
+    const cartActions =
+        document.getElementById('cart-actions');
 
-    if (cart.length === 0) {
 
-        cartItems.innerHTML = `
-            <div class="empty-cart">
-                Your cart is empty.
-            </div>
-        `;
+    function saveCart() {
 
-    } else {
-
-        cart.forEach(product => {
-
-            total = total + product.price;
-
-            cartItems.innerHTML += `
-                <div class="cart-item">
-
-                    <div class="product-info">
-
-                        <h3>
-                            ${product.name}
-                        </h3>
-
-                        <p>
-                            Product
-                        </p>
-
-                    </div>
-
-                    <div class="quantity">
-                        Qty: 1
-                    </div>
-
-                    <div class="price">
-                        ₹${product.price.toLocaleString('en-IN')}
-                    </div>
-
-                </div>
-            `;
-
-        });
+        localStorage.setItem(
+            'shopsphereCart',
+            JSON.stringify(cart)
+        );
 
     }
 
-    cartTotal.textContent =
-        `₹${total.toLocaleString('en-IN')}`;
+
+    function renderCart() {
+
+        cartItems.innerHTML = '';
+
+        let total = 0;
+
+
+        if (cart.length === 0) {
+
+            cartItems.innerHTML = `
+                <div class="empty-cart">
+                    Your cart is empty.
+                </div>
+            `;
+
+            cartActions.style.display = 'none';
+
+        } else {
+
+            cartActions.style.display = 'flex';
+
+
+            cart.forEach((product, index) => {
+
+                const quantity =
+                    product.quantity || 1;
+
+                const itemTotal =
+                    product.price * quantity;
+
+                total = total + itemTotal;
+
+
+                cartItems.innerHTML += `
+                    <div
+                        class="cart-item"
+                        data-testid="cart-item"
+                    >
+
+                        <div class="product-info">
+
+                            <h3>
+                                ${product.name}
+                            </h3>
+
+                            <p>
+                                ₹${product.price.toLocaleString('en-IN')}
+                                each
+                            </p>
+
+                        </div>
+
+
+                        <div class="quantity-controls">
+
+                            <button
+                                class="quantity-button"
+                                data-testid="decrease-quantity"
+                                aria-label="Decrease quantity"
+                                onclick="decreaseQuantity(${index})"
+                            >
+                                −
+                            </button>
+
+                            <span
+                                class="quantity-value"
+                                data-testid="quantity"
+                            >
+                                ${quantity}
+                            </span>
+
+                            <button
+                                class="quantity-button"
+                                data-testid="increase-quantity"
+                                aria-label="Increase quantity"
+                                onclick="increaseQuantity(${index})"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="price"
+                            data-testid="item-total"
+                        >
+                            ₹${itemTotal.toLocaleString('en-IN')}
+                        </div>
+
+
+                        <button
+                            class="remove-button"
+                            data-testid="remove-item"
+                            onclick="removeItem(${index})"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+                `;
+
+            });
+
+        }
+
+
+        cartTotal.textContent =
+            `₹${total.toLocaleString('en-IN')}`;
+
+    }
+
+
+    function increaseQuantity(index) {
+
+        cart[index].quantity =
+            (cart[index].quantity || 1) + 1;
+
+        saveCart();
+
+        renderCart();
+
+    }
+
+
+    function decreaseQuantity(index) {
+
+        cart[index].quantity =
+            (cart[index].quantity || 1) - 1;
+
+
+        if (cart[index].quantity <= 0) {
+
+            cart.splice(index, 1);
+
+        }
+
+
+        saveCart();
+
+        renderCart();
+
+    }
+
+
+    function removeItem(index) {
+
+        cart.splice(index, 1);
+
+        saveCart();
+
+        renderCart();
+
+    }
+
+
+    function clearCart() {
+
+        cart = [];
+
+        saveCart();
+
+        renderCart();
+
+    }
+
+
+    renderCart();
+
+
 
 </script>
 </body>
