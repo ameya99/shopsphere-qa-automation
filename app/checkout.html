@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere | Checkout</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .header {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #4f46e5;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .back {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        h2 {
+            font-size: 19px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 17px;
+            border: 1px solid #d7dbe5;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .payment-button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 8px;
+            background: #4f46e5;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .cancel-button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 10px;
+            border: 1px solid #d7dbe5;
+            border-radius: 8px;
+            background: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        @media(max-width: 700px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="header">
+
+        <div class="logo">
+            ◈ ShopSphere
+        </div>
+
+        <a
+            href="cart.html"
+            class="back">
+            ← Back to Cart
+        </a>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="container">
+
+        <h1>
+            Checkout
+        </h1>
+
+        <div class="checkout-grid">
+
+
+            <!-- DELIVERY DETAILS -->
+
+            <div class="card">
+
+                <h2>
+                    Delivery Details
+                </h2>
+
+                <form id="checkout-form">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        id="name"
+                        data-testid="checkout-name"
+                        type="text"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                    <label for="address">
+                        Address
+                    </label>
+
+                    <input
+                        id="address"
+                        data-testid="checkout-address"
+                        type="text"
+                        placeholder="Enter your address"
+                        required
+                    >
+
+                    <label for="city">
+                        City
+                    </label>
+
+                    <input
+                        id="city"
+                        data-testid="checkout-city"
+                        type="text"
+                        placeholder="Enter city"
+                        required
+                    >
+
+                    <label for="pincode">
+                        PIN Code
+                    </label>
+
+                    <input
+                        id="pincode"
+                        data-testid="checkout-pincode"
+                        type="text"
+                        placeholder="6 digit PIN code"
+                        required
+                    >
+
+                </form>
+
+            </div>
+
+
+            <!-- ORDER SUMMARY -->
+
+            <div class="card">
+
+                <h2>
+                    Order Summary
+                </h2>
+
+                <div id="order-items">
+                </div>
+
+                <div class="total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <span id="order-total">
+                        ₹0
+                    </span>
+
+                </div>
+
+                <button
+                    class="payment-button"
+                    data-testid="proceed-to-payment"
+                    onclick="proceedToPayment()">
+
+                    Proceed to Payment →
+
+                </button>
+
+                <button
+                    class="cancel-button"
+                    data-testid="cancel-checkout"
+                    onclick="window.location.href='cart.html'">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    const cart =
+        JSON.parse(localStorage.getItem('shopsphereCart')) || [];
+
+    const orderItems =
+        document.getElementById('order-items');
+
+    const orderTotal =
+        document.getElementById('order-total');
+
+    let total = 0;
+
+
+    cart.forEach(function(product) {
+
+        total += product.price;
+
+        orderItems.innerHTML += `
+            <div class="order-item">
+
+                <span>
+                    ${product.name}
+                </span>
+
+                <strong>
+                    ₹${product.price.toLocaleString('en-IN')}
+                </strong>
+
+            </div>
+        `;
+
+    });
+
+
+    orderTotal.textContent =
+        `₹${total.toLocaleString('en-IN')}`;
+
+
+    function proceedToPayment() {
+
+        const form =
+            document.getElementById('checkout-form');
+
+        if (!form.checkValidity()) {
+
+            form.reportValidity();
+
+            return;
+
+        }
+
+        window.location.href = 'payment.html';
+
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere | Modern Shopping</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        /* HEADER */
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header {
+            max-width: 1200px;
+            height: 72px;
+            margin: auto;
+            padding: 0 24px;
+
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #4f46e5;
+            white-space: nowrap;
+        }
+
+        .search {
+            flex: 1;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid #d7dbe5;
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,.1);
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .icon-button {
+            border: none;
+            background: transparent;
+            font-size: 21px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            right: -8px;
+            top: -8px;
+
+            width: 18px;
+            height: 18px;
+
+            background: #ef4444;
+            color: white;
+
+            border-radius: 50%;
+
+            font-size: 10px;
+            font-weight: bold;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-button {
+            border: none;
+            background: #4f46e5;
+            color: white;
+
+            padding: 11px 18px;
+            border-radius: 9px;
+
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* NAV */
+
+        nav {
+            border-top: 1px solid #f0f1f4;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: auto;
+            padding: 13px 24px;
+
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav a {
+            color: #606a7c;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav a:hover {
+            color: #4f46e5;
+        }
+
+        /* HERO */
+
+        .hero {
+            max-width: 1152px;
+            margin: 32px auto;
+
+            min-height: 360px;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #312e81,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color: white;
+
+            padding: 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 580px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            background: rgba(255,255,255,.15);
+
+            padding: 8px 13px;
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 46px;
+            line-height: 1.1;
+            margin-bottom: 18px;
+        }
+
+        .hero p {
+            font-size: 17px;
+            line-height: 1.6;
+
+            color: #e0e7ff;
+
+            margin-bottom: 28px;
+        }
+
+        .hero-button {
+            background: white;
+            color: #3730a3;
+
+            border: none;
+
+            padding: 14px 22px;
+
+            border-radius: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .hero-icon {
+            font-size: 150px;
+            opacity: .9;
+            margin-right: 60px;
+        }
+
+        /* CONTENT */
+
+        .container {
+            max-width: 1152px;
+            margin: auto;
+            padding: 0 0 50px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin: 42px 0 22px;
+        }
+
+        .section-header h2 {
+            font-size: 25px;
+        }
+
+        .view-all {
+            color: #4f46e5;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* CATEGORIES */
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .category {
+            background: white;
+
+            border: 1px solid #e6e8ee;
+
+            border-radius: 15px;
+
+            padding: 22px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .category:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,.06);
+        }
+
+        .category-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .category h3 {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .category p {
+            font-size: 12px;
+            color: #7b8495;
+        }
+
+        /* PRODUCTS */
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .product {
+            background: white;
+
+            border: 1px solid #e6e8ee;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            transition: .2s;
+        }
+
+        .product:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.07);
+        }
+
+        .product-image {
+            height: 200px;
+
+            background: #eef0f6;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 85px;
+        }
+
+        .product-info {
+            padding: 18px;
+        }
+
+        .product-category {
+            font-size: 10px;
+
+            color: #7c3aed;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            margin-bottom: 7px;
+        }
+
+        .product h3 {
+            font-size: 15px;
+            line-height: 1.4;
+
+            min-height: 42px;
+
+            margin-bottom: 8px;
+        }
+
+        .rating {
+            color: #f59e0b;
+
+            font-size: 13px;
+
+            margin-bottom: 14px;
+        }
+
+        .rating span {
+            color: #7b8495;
+        }
+
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .add-button {
+            border: none;
+
+            background: #eef2ff;
+            color: #4338ca;
+
+            padding: 9px 12px;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background: #4f46e5;
+            color: white;
+        }
+
+        /* FEATURES */
+
+        .features {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-top: 50px;
+        }
+
+        .feature {
+            background: white;
+
+            border: 1px solid #e6e8ee;
+
+            border-radius: 15px;
+
+            padding: 24px;
+
+            display: flex;
+
+            gap: 15px;
+        }
+
+        .feature-icon {
+            font-size: 28px;
+        }
+
+        .feature h3 {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .feature p {
+            font-size: 12px;
+            line-height: 1.5;
+            color: #737c8d;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #111827;
+            color: white;
+
+            padding: 40px 24px;
+        }
+
+        .footer {
+            max-width: 1152px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+        }
+
+        footer p {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 900px) {
+
+            .products,
+            .categories {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .hero {
+                margin: 25px;
+            }
+
+            .hero-icon {
+                display: none;
+            }
+
+            .container {
+                padding: 0 25px 50px;
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            .header {
+                padding: 0 16px;
+            }
+
+            .search {
+                display: none;
+            }
+
+            .nav {
+                overflow-x: auto;
+            }
+
+            .hero {
+                margin: 18px;
+                padding: 35px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .products,
+            .categories,
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 18px 40px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="header">
+
+        <div class="logo">
+            ◈ ShopSphere
+        </div>
+
+        <div class="search">
+            <input
+                type="text"
+                placeholder="Search products..."
+                aria-label="Search products"
+                data-testid="product-search"
+            >
+        </div>
+
+        <div class="actions">
+
+            <button
+                class="icon-button"
+                aria-label="Wishlist"
+            >
+                ♡
+            </button>
+
+            <button
+                class="icon-button"
+                aria-label="Shopping cart"
+                 onclick="window.location.href='cart.html'"
+            >
+                🛒
+                <span class="cart-count">0</span>
+            </button>
+
+            <button
+                class="login-button"
+            >
+                Login
+            </button>
+
+        </div>
+
+    </div>
+
+    <nav>
+
+        <div class="nav">
+
+            <a href="#">Home</a>
+            <a href="#">Electronics</a>
+            <a href="#">Fashion</a>
+            <a href="#">Home & Living</a>
+            <a href="#">Sports</a>
+            <a href="#">Deals</a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <span class="badge">
+                ✨ New season collection
+            </span>
+
+            <h1>
+                Find something
+                you'll love.
+            </h1>
+
+            <p>
+                Discover thoughtfully selected products,
+                great prices and a shopping experience
+                designed around you.
+            </p>
+
+            <button class="hero-button">
+                Explore Products →
+            </button>
+
+        </div>
+
+        <div class="hero-icon">
+            🎧
+        </div>
+
+    </section>
+
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <h2>
+                Shop by Category
+            </h2>
+
+            <span class="view-all">
+                View all →
+            </span>
+
+        </div>
+
+
+        <section class="categories">
+
+            <div class="category">
+
+                <div class="category-icon">
+                    💻
+                </div>
+
+                <h3>
+                    Electronics
+                </h3>
+
+                <p>
+                    128 products
+                </p>
+
+            </div>
+
+
+            <div class="category">
+
+                <div class="category-icon">
+                    👟
+                </div>
+
+                <h3>
+                    Fashion
+                </h3>
+
+                <p>
+                    246 products
+                </p>
+
+            </div>
+
+
+            <div class="category">
+
+                <div class="category-icon">
+                    🏠
+                </div>
+
+                <h3>
+                    Home & Living
+                </h3>
+
+                <p>
+                    184 products
+                </p>
+
+            </div>
+
+
+            <div class="category">
+
+                <div class="category-icon">
+                    ⚽
+                </div>
+
+                <h3>
+                    Sports
+                </h3>
+
+                <p>
+                    96 products
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <div class="section-header">
+
+            <h2>
+                Featured Products
+            </h2>
+
+            <span class="view-all">
+                View all →
+            </span>
+
+        </div>
+
+
+        <section class="products">
+
+
+            <article class="product">
+
+                <div class="product-image">
+                    🎧
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Electronics
+                    </div>
+
+                    <h3>
+                        Wireless Noise Cancelling Headphones
+                    </h3>
+
+                    <div class="rating">
+                        ★★★★★
+                        <span>(4.8)</span>
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <div class="price">
+                            ₹4,999
+                        </div>
+
+                        <button class="add-button" onclick="addToCart('Wireless Noise Cancelling Headphones')">
+                            Add to Cart
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <article class="product">
+
+                <div class="product-image">
+                    👟
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Fashion
+                    </div>
+
+                    <h3>
+                        Urban Runner Sneakers
+                    </h3>
+
+                    <div class="rating">
+                        ★★★★☆
+                        <span>(4.4)</span>
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <div class="price">
+                            ₹3,499
+                        </div>
+
+                        <button class="add-button" onclick="addToCart('Urban Runner Sneakers')">
+                            Add to Cart
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <article class="product">
+
+                <div class="product-image">
+                    🎒
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Travel
+                    </div>
+
+                    <h3>
+                        Everyday Premium Backpack
+                    </h3>
+
+                    <div class="rating">
+                        ★★★★★
+                        <span>(4.9)</span>
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <div class="price">
+                            ₹2,199
+                        </div>
+
+                        <button class="add-button" onclick="addToCart('Everyday Premium Backpack')">
+                            Add to Cart
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <article class="product">
+
+                <div class="product-image">
+                    ⌚
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        Electronics
+                    </div>
+
+                    <h3>
+                        Smart Fitness Watch
+                    </h3>
+
+                    <div class="rating">
+                        ★★★★☆
+                        <span>(4.6)</span>
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <div class="price">
+                            ₹6,999
+                        </div>
+
+                        <button class="add-button" onclick="addToCart('Smart Fitness Watch')">
+                            Add to Cart
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+        <section class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🚚
+                </div>
+
+                <div>
+
+                    <h3>
+                        Free Delivery
+                    </h3>
+
+                    <p>
+                        Free delivery on orders above ₹999.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🔒
+                </div>
+
+                <div>
+
+                    <h3>
+                        Secure Checkout
+                    </h3>
+
+                    <p>
+                        Your information is protected
+                        with secure checkout.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ↩️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Easy Returns
+                    </h3>
+
+                    <p>
+                        Hassle-free returns within 30 days.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <div class="footer">
+
+        <div>
+
+            <strong>
+                ◈ ShopSphere
+            </strong>
+
+            <p>
+                Modern shopping. Simple experience.
+            </p>
+
+        </div>
+
+        <div>
+
+            <p>
+                © 2026 ShopSphere — QA Practice Application
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+<script>
+   let cart = JSON.parse(localStorage.getItem('shopsphereCart')) || [];
+
+    const productPrices = {
+        "Wireless Noise Cancelling Headphones": 4999,
+        "Urban Runner Sneakers": 3499,
+        "Everyday Premium Backpack": 2199,
+        "Smart Fitness Watch": 6999
+    };
+
+    function updateCartCount() {
+
+        document.querySelector('.cart-count').textContent = cart.length;
+
+    }
+
+    function addToCart(productName) {
+
+        const product = {
+            name: productName,
+            price: productPrices[productName]
+        };
+
+        cart.push(product);
+
+        localStorage.setItem(
+            'shopsphereCart',
+            JSON.stringify(cart)
+        );
+
+        updateCartCount();
+
+        alert(productName + " added to cart");
+
+    }
+
+    updateCartCount(); 
+
+    //search function
+    const searchInput = document.querySelector('[data-testid="product-search"]');
+
+    searchInput.addEventListener('input', function () {
+
+    const searchText = searchInput.value.toLowerCase().trim();
+
+    const productCards = document.querySelectorAll('.product');
+
+    productCards.forEach(function (card) {
+
+        const productName = card
+            .querySelector('h3')
+            .textContent
+            .toLowerCase();
+
+        if (productName.includes(searchText)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+
+    });
+
+});
+</script>
+</body>
+</html>

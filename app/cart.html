@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere | Cart</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .header {
+            max-width: 1152px;
+            height: 72px;
+            margin: auto;
+            padding: 0 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #4f46e5;
+        }
+
+        .back-link {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: 30px;
+        }
+
+        .cart-card {
+            background: white;
+            border: 1px solid #e6e8ee;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-info h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .product-info p {
+            color: #7b8495;
+            font-size: 13px;
+        }
+
+        .quantity {
+            font-weight: 600;
+        }
+
+        .price {
+            font-weight: 800;
+        }
+
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .checkout-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #4f46e5;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .checkout-button:hover {
+            background: #4338ca;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px 20px;
+            color: #7b8495;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <div class="header">
+
+            <div class="logo">
+                ◈ ShopSphere
+            </div>
+
+            <a
+                href="index.html"
+                class="back-link">
+                ← Continue Shopping
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <div class="container">
+
+            <h1>
+                Your Shopping Cart
+            </h1>
+
+            <div class="cart-card">
+
+                <div id="cart-items">
+            </div>
+
+
+                <div class="summary">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <span id="cart-total">
+            ₹0
+        </span>
+
+                </div>
+
+
+                <button
+                    class="checkout-button"
+                    data-testid="proceed-to-checkout"
+                    onclick="window.location.href='login.html'">
+                    
+                    Proceed to Checkout →
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+<script>
+
+    const cart =
+        JSON.parse(localStorage.getItem('shopsphereCart')) || [];
+
+    const cartItems =
+        document.getElementById('cart-items');
+
+    const cartTotal =
+        document.getElementById('cart-total');
+
+    let total = 0;
+
+    if (cart.length === 0) {
+
+        cartItems.innerHTML = `
+            <div class="empty-cart">
+                Your cart is empty.
+            </div>
+        `;
+
+    } else {
+
+        cart.forEach(product => {
+
+            total = total + product.price;
+
+            cartItems.innerHTML += `
+                <div class="cart-item">
+
+                    <div class="product-info">
+
+                        <h3>
+                            ${product.name}
+                        </h3>
+
+                        <p>
+                            Product
+                        </p>
+
+                    </div>
+
+                    <div class="quantity">
+                        Qty: 1
+                    </div>
+
+                    <div class="price">
+                        ₹${product.price.toLocaleString('en-IN')}
+                    </div>
+
+                </div>
+            `;
+
+        });
+
+    }
+
+    cartTotal.textContent =
+        `₹${total.toLocaleString('en-IN')}`;
+
+</script>
+</body>
+
+</html>

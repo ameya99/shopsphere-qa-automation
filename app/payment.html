@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere | Payment</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .payment-card {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            text-align: center;
+            color: #4f46e5;
+            font-size: 25px;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #7b8495;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 18px;
+            border: 1px solid #d7dbe5;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .pay-button {
+            border: none;
+            background: #4f46e5;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .cancel-button {
+            margin-top: 10px;
+            border: 1px solid #d7dbe5;
+            background: white;
+        }
+
+        .test-card {
+            background: #f5f7ff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            color: #4b5563;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="payment-card">
+
+        <div class="logo">
+            ◈ ShopSphere
+        </div>
+
+        <h1>
+            Payment
+        </h1>
+
+        <p class="subtitle">
+            Complete your order using our test payment gateway.
+        </p>
+
+        <div class="test-card">
+
+            <strong>Test Card</strong><br>
+
+            Card: 4111 1111 1111 1111<br>
+            Expiry: 12/30<br>
+            CVV: 123
+
+        </div>
+
+        <form id="payment-form">
+
+            <label for="card-number">
+                Card Number
+            </label>
+
+            <input
+                id="card-number"
+                data-testid="card-number"
+                type="text"
+                placeholder="4111 1111 1111 1111"
+                required
+            >
+
+            <div class="row">
+
+                <div>
+
+                    <label for="expiry">
+                        Expiry
+                    </label>
+
+                    <input
+                        id="expiry"
+                        data-testid="card-expiry"
+                        type="text"
+                        placeholder="MM/YY"
+                        required
+                    >
+
+                </div>
+
+                <div>
+
+                    <label for="cvv">
+                        CVV
+                    </label>
+
+                    <input
+                        id="cvv"
+                        data-testid="card-cvv"
+                        type="password"
+                        placeholder="123"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+            <button
+                type="submit"
+                class="pay-button"
+                data-testid="pay-now">
+
+                Pay Now
+
+            </button>
+
+        </form>
+
+        <button
+            class="cancel-button"
+            data-testid="cancel-payment"
+            onclick="window.location.href='checkout.html'">
+
+            Cancel
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    document
+        .getElementById('payment-form')
+        .addEventListener('submit', function(event) {
+
+            event.preventDefault();
+
+            window.location.href = 'order-confirmation.html';
+
+        });
+
+</script>
+
+</body>
+</html>
