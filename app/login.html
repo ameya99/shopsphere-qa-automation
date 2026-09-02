@@ -100,9 +100,10 @@
 
         <div class="login-card">
 
-            <div class="logo">
-                ◈ ShopSphere
-            </div>
+            <a href="index.html" class="logo">
+             ◈ ShopSphere
+            </a>
+
 
             <h1>Login</h1>
 
@@ -162,7 +163,15 @@
 
     </div>
 
-    <script>
+<script>
+
+    if (
+        sessionStorage.getItem('shopsphereCheckoutPending') === 'true' &&
+        localStorage.getItem('shopsphereLoggedIn') === 'true'
+    ) {
+        sessionStorage.removeItem('shopsphereCheckoutPending');
+        window.location.href = 'checkout.html';
+    }
 
     document
         .getElementById('login-form')
@@ -188,7 +197,6 @@
                 'shopsphereUser'
             );
 
-            // User has not signed up
             if (!storedUser) {
 
                 message.textContent =
@@ -201,7 +209,6 @@
 
             const user = JSON.parse(storedUser);
 
-            // Check email and password
             if (
                 user.email !== email ||
                 user.password !== password
@@ -215,7 +222,6 @@
                 return;
             }
 
-            // Login successful
             localStorage.setItem(
                 'shopsphereLoggedIn',
                 'true'
@@ -233,6 +239,13 @@
         });
 
 </script>
+
+    
+
+
+    
+
+
 
 
 </body>

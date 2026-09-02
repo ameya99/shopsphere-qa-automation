@@ -30,6 +30,54 @@
 .clear-search:hover {
     color: #172033;
 }
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-email {
+    color: #172033;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.logout-button {
+    border: 1px solid #d7dbe5;
+    background: white;
+    color: #4f46e5;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background: #eef2ff;
+}
+
+.user-email {
+    color: #172033;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.logout-button {
+    border: 1px solid #d7dbe5;
+    background: white;
+    color: #4f46e5;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background: #eef2ff;
+}
+
 
 </style>
 </head>
@@ -57,7 +105,17 @@
 <div class="actions">
 <button class="icon-button" aria-label="Wishlist" data-testid="wishlist-button" onclick="showWishlist()">♡</button>
 <button class="icon-button" aria-label="Shopping cart" data-testid="cart-button" onclick="window.location.href='cart.html'">🛒<span class="cart-count" data-testid="cart-count">0</span></button>
-<button class="login-button" data-testid="login-button" onclick="window.location.href='login.html'">Login</button>
+<div id="user-area">
+    <button
+        class="login-button"
+        data-testid="login-button"
+        onclick="window.location.href='login.html'">
+        Login
+    </button>
+</div>
+
+
+
 </div></div>
 <nav><div class="nav">
 <button data-category="all" class="active">Home</button><button data-category="Electronics">Electronics</button><button data-category="Fashion">Fashion</button><button data-category="Home & Living">Home & Living</button><button data-category="Sports">Sports</button><button data-category="Deals">Deals</button>
@@ -125,7 +183,82 @@ function clearSearch() {
 }
 document.querySelectorAll('.nav button').forEach(button=>button.addEventListener('click',()=>selectCategory(button.dataset.category)));
 document.querySelectorAll('.category').forEach(card=>card.addEventListener('click',()=>selectCategory(card.dataset.category)));
+
+function updateUserArea() {
+    const userArea = document.getElementById('user-area');
+
+    const loggedIn = localStorage.getItem('shopsphereLoggedIn');
+    const storedUser = localStorage.getItem('shopsphereUser');
+
+    if (loggedIn === 'true' && storedUser) {
+        const user = JSON.parse(storedUser);
+
+        userArea.innerHTML = `
+            <span class="user-email">👤 ${user.email}</span>
+            <button
+                class="logout-button"
+                data-testid="logout-button"
+                onclick="logoutUser()">
+                Logout
+            </button>
+        `;
+    }
+}
+
+function logoutUser() {
+    localStorage.removeItem('shopsphereLoggedIn');
+    window.location.href = 'index.html';
+}
+
+updateUserArea();
+
+
 updateCartCount();
+
 </script>
+
+function updateUserArea() {
+    const userArea = document.getElementById('user-area');
+
+    const loggedIn = localStorage.getItem('shopsphereLoggedIn');
+    const storedUser = localStorage.getItem('shopsphereUser');
+
+    if (loggedIn === 'true' && storedUser) {
+
+        const user = JSON.parse(storedUser);
+
+        userArea.innerHTML = `
+            <div class="user-area">
+                <span class="user-email">👤 ${user.email}</span>
+                <button
+                    class="logout-button"
+                    data-testid="logout-button"
+                    onclick="logoutUser()">
+                    Logout
+                </button>
+            </div>
+        `;
+
+    } else {
+
+        userArea.innerHTML = `
+            <button
+                class="login-button"
+                data-testid="login-button"
+                onclick="window.location.href='login.html'">
+                Login
+            </button>
+        `;
+    }
+}
+
+function logoutUser() {
+    localStorage.removeItem('shopsphereLoggedIn');
+
+    window.location.href = 'index.html';
+}
+
+updateUserArea();
+
 </body>
 </html>

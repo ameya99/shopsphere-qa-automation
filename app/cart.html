@@ -196,9 +196,10 @@
 
         <div class="header">
 
-            <div class="logo">
-                ◈ ShopSphere
-            </div>
+            <a href="index.html" class="logo">
+             ◈ ShopSphere
+            </a>
+
 
             <a
                 href="index.html"
@@ -253,13 +254,14 @@
 
 
                 <button
-                    class="checkout-button"
-                    data-testid="proceed-to-checkout"
-                    onclick="window.location.href='login.html'">
-                    
-                    Proceed to Checkout →
+    class="checkout-button"
+    data-testid="proceed-to-checkout"
+    onclick="sessionStorage.setItem('shopsphereCheckoutPending', 'true'); window.location.href='login.html'">
 
-                </button>
+    Proceed to Checkout →
+
+</button>
+
 
             </div>
 
@@ -458,6 +460,17 @@
 
     }
 
+    function proceedToCheckout() {
+
+    const loggedIn =
+        localStorage.getItem('shopsphereLoggedIn') === 'true';
+
+    if (loggedIn) {
+        window.location.href = 'checkout.html';
+    } else {
+        window.location.href = 'login.html';
+    }
+}
 
     renderCart();
 
