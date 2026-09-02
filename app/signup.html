@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopSphere | Login</title>
+    <title>ShopSphere | Sign Up</title>
 
     <style>
         * {
@@ -25,7 +25,7 @@
             justify-content: center;
         }
 
-        .login-card {
+        .signup-card {
             width: 400px;
             background: white;
             padding: 35px;
@@ -74,19 +74,19 @@
             cursor: pointer;
         }
 
-        .login-button {
+        .signup-button {
             border: none;
             background: #4f46e5;
             color: white;
         }
 
-        .cancel-button {
+        .login-button {
             margin-top: 10px;
             border: 1px solid #d7dbe5;
             background: white;
         }
 
-        #login-message {
+        #signup-message {
             text-align: center;
             margin-top: 15px;
             font-weight: 600;
@@ -98,26 +98,26 @@
 
     <div class="page">
 
-        <div class="login-card">
+        <div class="signup-card">
 
             <div class="logo">
                 ◈ ShopSphere
             </div>
 
-            <h1>Login</h1>
+            <h1>Sign Up</h1>
 
             <p class="subtitle">
-                Login to continue with your order.
+                Create your ShopSphere account.
             </p>
 
-            <form id="login-form">
+            <form id="signup-form">
 
                 <label for="email">Email</label>
 
                 <input
                     type="email"
                     id="email"
-                    data-testid="login-email"
+                    data-testid="signup-email"
                     placeholder="Enter your email"
                     required
                 >
@@ -127,36 +127,29 @@
                 <input
                     type="password"
                     id="password"
-                    data-testid="login-password"
-                    placeholder="Enter your password"
+                    data-testid="signup-password"
+                    placeholder="Create a password"
+                    minlength="6"
                     required
                 >
 
                 <button
                     type="submit"
-                    class="login-button"
-                    data-testid="login-button">
-                    Login & Continue
+                    class="signup-button"
+                    data-testid="signup-button">
+                    Create Account
                 </button>
 
             </form>
 
             <button
-                class="cancel-button"
-                data-testid="cancel-login"
-                onclick="window.location.href='cart.html'">
-                Cancel
+                class="login-button"
+                data-testid="go-to-login"
+                onclick="window.location.href='login.html'">
+                Already have an account? Login
             </button>
 
-            <button
-            class="cancel-button"
-            data-testid="signup-link"
-            onclick="window.location.href='signup.html'">
-            New user? Sign Up
-            </button>
-
-
-            <div id="login-message"></div>
+            <div id="signup-message"></div>
 
         </div>
 
@@ -164,76 +157,71 @@
 
     <script>
 
-    document
-        .getElementById('login-form')
-        .addEventListener('submit', function(event) {
+        document
+            .getElementById('signup-form')
+            .addEventListener('submit', function(event) {
 
-            event.preventDefault();
+                event.preventDefault();
 
-            const email = document
-                .getElementById('email')
-                .value
-                .trim()
-                .toLowerCase();
+                const email = document
+                    .getElementById('email')
+                    .value
+                    .trim()
+                    .toLowerCase();
 
-            const password = document
-                .getElementById('password')
-                .value;
+                const password = document
+                    .getElementById('password')
+                    .value;
 
-            const message = document.getElementById(
-                'login-message'
-            );
+                const existingUser = localStorage.getItem(
+                    'shopsphereUser'
+                );
 
-            const storedUser = localStorage.getItem(
-                'shopsphereUser'
-            );
+                if (existingUser) {
 
-            // User has not signed up
-            if (!storedUser) {
+                    const user = JSON.parse(existingUser);
 
-                message.textContent =
-                    'No account found. Please sign up first.';
+                    if (user.email === email) {
 
-                message.style.color = '#dc2626';
+                        document.getElementById(
+                            'signup-message'
+                        ).textContent =
+                            'An account with this email already exists.';
 
-                return;
-            }
+                        document.getElementById(
+                            'signup-message'
+                        ).style.color = '#dc2626';
 
-            const user = JSON.parse(storedUser);
+                        return;
+                    }
+                }
 
-            // Check email and password
-            if (
-                user.email !== email ||
-                user.password !== password
-            ) {
+                const user = {
+                    email: email,
+                    password: password
+                };
 
-                message.textContent =
-                    'Invalid email or password.';
+                localStorage.setItem(
+                    'shopsphereUser',
+                    JSON.stringify(user)
+                );
 
-                message.style.color = '#dc2626';
+                document.getElementById(
+                    'signup-message'
+                ).textContent =
+                    'Account created successfully! You can now login.';
 
-                return;
-            }
+                document.getElementById(
+                    'signup-message'
+                ).style.color = '#16a34a';
 
-            // Login successful
-            localStorage.setItem(
-                'shopsphereLoggedIn',
-                'true'
-            );
+                document
+                    .getElementById('signup-form')
+                    .reset();
 
-            message.textContent =
-                'Login successful!';
+            });
 
-            message.style.color = '#16a34a';
-
-            setTimeout(function() {
-                window.location.href = 'checkout.html';
-            }, 500);
-
-        });
-
-</script>
-
+    </script>
 
 </body>
 
