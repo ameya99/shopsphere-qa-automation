@@ -136,8 +136,20 @@
 
 <script>
 
-    // Clear the cart after successful payment
-    localStorage.removeItem('shopsphereCart');
+    // Confirmation is only valid after a successful payment.
+    if (
+        localStorage.getItem('shopspherePaymentCompleted') !== 'true'
+    ) {
+        window.location.href = 'login.html';
+    } else {
+
+        // Clear the cart after successful payment.
+        localStorage.removeItem('shopsphereCart');
+
+        // Consume the payment-success state so the confirmation
+        // cannot be reused as proof of another completed payment.
+        localStorage.removeItem('shopspherePaymentCompleted');
+    }
 
 </script>
 

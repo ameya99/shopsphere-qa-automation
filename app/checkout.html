@@ -143,9 +143,8 @@
     <div class="header">
 
         <a href="index.html" class="logo">
-    ◈ ShopSphere
-</a>
-
+            ◈ ShopSphere
+        </a>
 
         <a
             href="cart.html"
@@ -188,6 +187,9 @@
                         data-testid="checkout-name"
                         type="text"
                         placeholder="Enter your name"
+                        maxlength="50"
+                        pattern="[A-Za-z]+(?:[ '-][A-Za-z]+)*"
+                        title="Enter a valid name using letters, spaces, hyphens, or apostrophes."
                         required
                     >
 
@@ -200,6 +202,9 @@
                         data-testid="checkout-address"
                         type="text"
                         placeholder="Enter your address"
+                        maxlength="150"
+                        pattern="[A-Za-z0-9][A-Za-z0-9 .,'/#-]*"
+                        title="Enter a valid address using letters, numbers, spaces, and common address punctuation."
                         required
                     >
 
@@ -212,6 +217,9 @@
                         data-testid="checkout-city"
                         type="text"
                         placeholder="Enter city"
+                        maxlength="50"
+                        pattern="[A-Za-z]+(?:[ '-][A-Za-z]+)*"
+                        title="Enter a valid city using letters, spaces, hyphens, or apostrophes."
                         required
                     >
 
@@ -224,6 +232,10 @@
                         data-testid="checkout-pincode"
                         type="text"
                         placeholder="6 digit PIN code"
+                        inputmode="numeric"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        title="PIN Code must contain exactly 6 digits."
                         required
                     >
 
@@ -284,6 +296,12 @@
 
 <script>
 
+    // Checkout must not be directly accessible without authentication.
+    if (localStorage.getItem('shopsphereLoggedIn') !== 'true') {
+        window.location.href = 'login.html';
+    }
+
+
     const cart =
         JSON.parse(localStorage.getItem('shopsphereCart')) || [];
 
@@ -323,6 +341,12 @@
 
     function proceedToPayment() {
 
+        // Re-check authentication when proceeding.
+        if (localStorage.getItem('shopsphereLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+            return;
+        }
+
         const form =
             document.getElementById('checkout-form');
 
@@ -333,6 +357,66 @@
             return;
 
         }
+
+        // Explicit validation after browser validation.
+        const name =
+            document.getElementById('name').value.trim();
+
+        const address =
+            document.getElementById('address').value.trim();
+
+        const city =
+            document.getElementById('city').value.trim();
+
+        const pincode =
+            document.getElementById('pincode').value.trim();
+
+
+        const namePattern =
+            /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
+
+        const addressPattern =
+            /^[A-Za-z0-9][A-Za-z0-9 .,'/#-]*$/;
+
+        const cityPattern =
+            /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
+
+
+        if (
+            name.length === 0 ||
+            name.length > 50 ||
+            !namePattern.test(name)
+        ) {
+            alert('Please enter a valid full name.');
+            return;
+        }
+
+
+        if (
+            address.length === 0 ||
+            address.length > 150 ||
+            !addressPattern.test(address)
+        ) {
+            alert('Please enter a valid address.');
+            return;
+        }
+
+
+        if (
+            city.length === 0 ||
+            city.length > 50 ||
+            !cityPattern.test(city)
+        ) {
+            alert('Please enter a valid city.');
+            return;
+        }
+
+
+        if (!/^\d{6}$/.test(pincode)) {
+            alert('PIN Code must contain exactly 6 digits.');
+            return;
+        }
+
 
         window.location.href = 'payment.html';
 
